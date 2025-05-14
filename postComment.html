@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Post Details</title>
+<!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+  <div class="container my-5">
+    <div id="post-details" class="card mb-4"></div>
+
+    <h5>Add a Comment:</h5>
+    <div class="form-group">
+      <input type="text" id="new-comment" class="form-control" placeholder="Write a comment...">
+    </div>
+    <button id="add-comment" class="btn btn-primary">Add Comment</button>
+
+    <h5 class="mt-4">Comments:</h5>
+    <ul id="comments-list" class="list-group"></ul>
+  </div>
+
+  <script>
+    let apiImages = "https://68219a91259dad2655afc3cc.mockapi.io/api/users/image";
+let urlParams = new URLSearchParams(window.location.search);
+let postId = urlParams.get("id");
+
+let postContainer = document.getElementById("post-details");
+let commentsList = document.getElementById("comments-list");
+let newCommentInput = document.getElementById("new-comment");
+let addCommentBtn = document.getElementById("add-comment");
+
+async function loadPost() {
+  try {
+    let res = await fetch(`${apiImages}/${postId}`);
+    let post = await res.json();
+
+    postContainer.innerHTML = `
+      <div class="card-body">
+        <h5 class="card-title">Posted by: ${post.username}</h5>
+        <img src="${post.imageUrl}" class="img-fluid mb-3" />
+        <p>${post.text}</p>
+      </div>
+    `;
+
+    renderComments(post.comment || []);
+  } catch (err) {
+    console.error("Error loading post:", err);
+  }
+}
+
+function renderComments(comments) {
+  commentsList.innerHTML = "";
+  comments.forEach(item => {
+    let li = document.createElement("li");
+    li.className = "list-group-item";
+    li.innerText = item;
+    commentsList.appendChild(li);
+  });
+}
+
+addCommentBtn.addEventListener("click", async () => {
+  let commentText = newCommentInput.value.trim();
+  if (!commentText) return;
+
+  try {
+    let res = await fetch(`${apiImages}/${postId}`);
+    let post = await res.json();
+    let updatedComments = [...(post.comment || []), commentText];
+
+    await fetch(`${apiImages}/${postId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...post, comment: updatedComments }),
+    });
+
+    newCommentInput.value = "";
+    renderComments(updatedComments);
+  } catch (err) {
+    console.error("Error adding comment:", err);
+  }
+});
+
+loadPost();
+
+  </script>
+</body>
+</html>

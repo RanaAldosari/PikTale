@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PostDetails</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <a class="navbar-brand w-75" href="#">PicTale<i class="fa-solid fa-camera"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-around align-items-center" id="navbarNav">
+      <ul class="navbar-nav">
+         <button onclick="logout()" class="btn btn-danger ">Log out</button>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- post -->
+  <section class="m-5">
+    <h3>Create Post</h3>
+    <input type="text" id="image-url" placeholder="Image URL" class="form-control mb-2">
+    <input type="text" id="image-description" placeholder="Description" class="form-control mb-2">
+    <button id="submit" type="button" class="btn btn-primary">Post</button>
+  </section>
+<!-- showpost -->
+  <section id="posts-container" class="container mt-5 row gap-4 justify-content-center"></section>
+<script src="home.js"></script>
+</body>
+</html>
